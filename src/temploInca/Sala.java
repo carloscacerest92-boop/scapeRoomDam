@@ -1,5 +1,6 @@
 package temploInca;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public abstract class Sala implements Reto {
@@ -8,12 +9,22 @@ public abstract class Sala implements Reto {
     protected String descripcion;
     protected String itemRecompensa;
     protected  EstadoSala estado;
+    protected ArrayList<Sala> vecinas;
 
     public Sala(String nombre, String descripcion, String itemRecompensa) {
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.itemRecompensa = itemRecompensa;
         this.estado = EstadoSala.ACCESIBLE;
+        this.vecinas = new ArrayList<>();
+    }
+
+    public void agregarVecina(Sala vecina){
+        this.vecinas.add(vecina);
+    }
+
+    public ArrayList<Sala> getVecinas() {
+        return vecinas;
     }
 
     public String getNombre() {

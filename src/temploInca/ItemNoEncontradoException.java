@@ -1,0 +1,7 @@
+package temploInca;
+
+public class ItemNoEncontradoException extends Exception {
+    public ItemNoEncontradoException(String mensaje) {
+        super(mensaje);
+    }
+}
