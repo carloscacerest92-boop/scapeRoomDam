@@ -1,19 +1,43 @@
-package temploInca;
+package temploInca.main;
 
+import temploInca.modelo.*;
+import temploInca.persistencia.GestorFicheros;
 import java.util.Scanner;
 import java.util.ArrayList;
 
 public class TemploMain {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
+        GestorFicheros gestorFicheros = new GestorFicheros();
 
         System.out.println("=================================================");
         System.out.println("          EL MISTERIO DEL TEMPLO INCA");
         System.out.println("=================================================");
-        System.out.print("Introduce tu nombre, explorador: ");
-        String nombreJugador = sc.nextLine().trim();
 
-        Jugador jugador = new Jugador(nombreJugador);
+        Jugador jugador = null;
+
+        // Comprobamos si el archivo de guardado existe
+        java.io.File archivoGuardado = new java.io.File("partida_guardada.dat");
+
+        if (archivoGuardado.exists()) {
+            System.out.print("Se ha encontrado una partida guardada. ¿Deseas continuarla? (S/N): ");
+            String respuesta = sc.nextLine().trim().toLowerCase();
+
+            if (respuesta.equals("s")) {
+                jugador = gestorFicheros.cargarPartida();
+            } else {
+                // si elige nueva partida, borramos el fichero guardado
+                archivoGuardado.delete();
+                System.out.println("Partida anterior borrada. Preparando una nueva aventura...");
+            }
+        }
+
+        // Si el jugador es null (porque no había partida o porque eligió no cargarla), creamos uno nuevo
+        if (jugador == null) {
+            System.out.print("Introduce tu nombre, explorador: ");
+            String nombreJugador = sc.nextLine().trim();
+            jugador = new Jugador(nombreJugador);
+        }
 
         ArrayList<Sala> mapa = new ArrayList<>();
 
@@ -37,7 +61,7 @@ public class TemploMain {
                 "¿De qué color es la sangre que pide el altar?", "rojo", "Es el color del fuego y la pasión."));
         mapa.add(new SalaAcertijo("8. Cámara Dorada Final", "Un cofre gigante con un candado numérico te espera.",
                 "[Legendario]Llave de la Sabiduria>>>Te permite salir del templo Inca",
-                "Introduce el código final de 3 digitos:", "135", "Tu inventario puede guardar la pista!>"));
+                "Introduce el código final de 3 digitos:", "315", "Tu inventario puede guardar la pista!>"));
 
         System.out.println("\n¡Bienvenido " + jugador.getNombre() + "! Tienes " + jugador.getEnergia()
                 + " puntos de energía para escapar.");
@@ -55,6 +79,15 @@ public class TemploMain {
             System.out.println("¡FELICIDADES " + jugador.getNombre() + "! Has escapado del templo con vida.");
             jugador.mostrarInventario();
             System.out.println("=================================================");
+
+            // guardamos en la base de datos de mysql al completar el scape room
+
+            temploInca.persistencia.GestorMySQL gestorBD = new temploInca.persistencia.GestorMySQL();
+            gestorBD.guardarResultado(jugador.getNombre(), jugador.getEnergia());
+
+            // llamamos  a la interfaz
+            temploInca.vista.VentanaRanking ventana = new temploInca.vista.VentanaRanking();
+            ventana.setVisible(true);
 
         } catch (SinEnergiaException e) {
             System.out.println("\n=================================================");

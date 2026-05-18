@@ -1,4 +1,4 @@
-package temploInca;
+package temploInca.modelo;
 
 import java.util.Scanner;
 
@@ -20,7 +20,7 @@ public class SalaAcertijo extends Sala {
     public boolean resolver(Jugador jugador, Scanner sc) {
         mostrarHistoria();
         System.out.println("RETO: " + this.pregunta);
-        System.out.println("*(Comandos: 'inventario' | 'mapa' | 'pista')*");
+        System.out.println("*(Comandos: 'inventario' | 'mapa' | 'pista' | 'guardar')*");
 
         while (jugador.estaVivo() && this.estado != EstadoSala.COMPLETADA) {
             System.out.print("> Tu respuesta: ");
@@ -49,9 +49,11 @@ public class SalaAcertijo extends Sala {
                 this.setEstado(EstadoSala.COMPLETADA);
                 return true;
 
-            }
+            } else if (respuesta.equalsIgnoreCase("guardar")) {
+                temploInca.persistencia.GestorFicheros gestor = new temploInca.persistencia.GestorFicheros();
+                gestor.guardarPartida(jugador);
 
-            else {
+            }else {
                 System.out.println("X Respuesta incorrecta...");
                 jugador.gastarEnergia(1);
 
