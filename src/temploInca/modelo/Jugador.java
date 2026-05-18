@@ -1,5 +1,6 @@
-package temploInca;
+package temploInca.modelo;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.HashMap;
 import java.util.Map;
@@ -7,7 +8,7 @@ import java.util.Set;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class Jugador {
+public class Jugador implements Serializable {
 
     private String nombre;
     private int energia;

@@ -1,4 +1,4 @@
-package temploInca;
+package temploInca.modelo;
 
 public class SinEnergiaException extends RuntimeException {
 

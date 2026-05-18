@@ -1,4 +1,4 @@
-package temploInca;
+package temploInca.modelo;
 
 import java.util.Scanner;
 

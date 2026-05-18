@@ -1,4 +1,4 @@
-package temploInca;
+package temploInca.modelo;
 
 public enum EstadoSala {
     BLOQUEADA,

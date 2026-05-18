@@ -1,10 +1,11 @@
-package temploInca;
+package temploInca.modelo;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public abstract class Sala implements Reto {
-    // Atributos protegidos para que lo shijos puedan usarlos
+public abstract class Sala implements Reto, Serializable {
+
     protected String nombre;
     protected String descripcion;
     protected String itemRecompensa;
